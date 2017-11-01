@@ -112,74 +112,6 @@ var params = { width: xRatio * (radius * 2 + 3 * radiusPadding) + 2 * radius, he
 
 var two = new Two(params).appendTo(twoDiv);
 
-function dtr(deg){//degrees to radians
-	return deg / 180 * Math.PI
-}
-
-function clock(x, y){
-
-	var hourAngle = -90;
-	var minuteAngle = -90;
-
-	var circle = two.makeCircle(x, y, radius);
-	circle.linewidth = radiusPadding;
-
-	var minuteGroup = two.makeGroup()
-	minuteGroup.translation.set(x, y)
-
-	var minuteHand = two.makeLine(0, 0, minuteLength * Math.cos(dtr(minuteAngle)), minuteLength * Math.sin(dtr(minuteAngle)))
-	minuteHand.stroke = "#ff0000"
-	minuteHand.linewidth = 2
-
-	minuteGroup.add(minuteHand)
-
-	var hourGroup = two.makeGroup()
-	hourGroup.translation.set(x, y)
-
-	var hourHand = two.makeLine(0, 0, hourLength * Math.cos(dtr(hourAngle)), hourLength * Math.sin(dtr(hourAngle)))
-	hourHand.linewidth = 3
-
-	hourGroup.add(hourHand)
-
-	hourAngle = 0;
-	minuteAngle = 0;
-
-	function incrementTime(dhA, dmA){
-		updateTime(hourAngle + dhA, minuteAngle + dmA)
-	}
-
-	function updateTime(hA, mA){
-
-		hourAngle = hA
-		minuteAngle = mA
-
-		hourGroup.rotation = dtr(hourAngle)
-		minuteGroup.rotation = dtr(minuteAngle)
-
-		two.update()
-	}
-
-	function getHourAngle(){
-		return hourAngle
-	}
-
-	function getMinuteAngle(){
-		return minuteAngle
-	}
-	
-	// updateLine(180, 145)
-
-
-	two.update();
-
-	return {
-		updateTime: updateTime,
-		incrementTime: incrementTime,
-		getHourAngle: getHourAngle,
-		getMinuteAngle: getMinuteAngle
-	}
-}
-
 function getIndex(y, x){
 	// return yRatio * y + x
 	return yRatio * y + x
@@ -187,9 +119,14 @@ function getIndex(y, x){
 
 var clocks = []
 
-for(var x = 0; x < xRatio; x++)
-	for(var y = 0; y < yRatio; y++)
-		clocks.push(clock(radius * x * 2.5 + radiusPadding + radius, radius * y * 2.5 + radiusPadding + radius))
+for (var x = 0; x < xRatio; x++) {
+    for (var y = 0; y < yRatio; y++) {
+        var cx = radius * x * 2.5 + radiusPadding + radius;
+        var cy = radius * y * 2.5 + radiusPadding + radius;
+        var clock = new Clock(cx, cy, radius, {hourLength: radius * 0.66});
+        clocks.push(clock);
+    }
+}
 
 // clock(radius + radiusPadding,radius + radiusPadding)
 
