@@ -17,10 +17,6 @@ var twoDiv = document.getElementById('two');
 
 
 var radius = 15;
-var minuteLength = 13;
-var hourLength = 10;
-var minuteColor = "#000000"
-var hourColor = "#FF0000"
 var radiusPadding = 2;
 
 var xRatio = 23;
@@ -118,15 +114,25 @@ function getIndex(y, x){
 }
 
 var clocks = []
-
+	
 for (var x = 0; x < xRatio; x++) {
-    for (var y = 0; y < yRatio; y++) {
-        var cx = radius * x * 2.5 + radiusPadding + radius;
-        var cy = radius * y * 2.5 + radiusPadding + radius;
-        var clock = new Clock(cx, cy, radius, {hourLength: radius * 0.66});
-        clocks.push(clock);
-    }
+	for (var y = 0; y < yRatio; y++) {
+		var cx = radius * x * 2.5 + radiusPadding + radius;
+		var cy = radius * y * 2.5 + radiusPadding + radius;
+		var clock = new Clock(cx, cy, radius, {hourLength: radius * 0.66});
+		clocks.push(clock);
+	}
 }
+
+// Simple animation test
+function loop() {
+	for (var i = 0; i < clocks.length; i++) {
+		var minuteInc = 1 + i / clocks.length * 5;
+		clocks[i].incrementTime(minuteInc/60, minuteInc);
+	}
+	setTimeout(loop, 16);
+}
+loop();
 
 // clock(radius + radiusPadding,radius + radiusPadding)
 
